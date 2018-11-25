@@ -1,0 +1,38 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/else/Documents/cpu8080/src/Cpu.cpp
+Cpu.hpp
+/home/else/Documents/cpu8080/src/Cpu.hpp
+
+/home/else/Documents/cpu8080/src/Cpu.hpp
+stdio.h
+-
+string.h
+-
+stdlib.h
+-
+stdint.h
+-
+chrono
+-
+thread
+-
+bitset
+-
+iostream
+-
+SDL2/SDL.h
+/home/else/Documents/cpu8080/src/SDL2/SDL.h
+
+/home/else/Documents/cpu8080/src/main.cpp
+time.h
+-
+Cpu.hpp
+/home/else/Documents/cpu8080/src/Cpu.hpp
+
