@@ -123,32 +123,32 @@ cpu8080/fast:
 	$(MAKE) -f CMakeFiles/cpu8080.dir/build.make CMakeFiles/cpu8080.dir/build
 .PHONY : cpu8080/fast
 
-src/Cpu.o: src/Cpu.cpp.o
+src/Intel8080.o: src/Intel8080.cpp.o
 
-.PHONY : src/Cpu.o
+.PHONY : src/Intel8080.o
 
 # target to build an object file
-src/Cpu.cpp.o:
-	$(MAKE) -f CMakeFiles/cpu8080.dir/build.make CMakeFiles/cpu8080.dir/src/Cpu.cpp.o
-.PHONY : src/Cpu.cpp.o
+src/Intel8080.cpp.o:
+	$(MAKE) -f CMakeFiles/cpu8080.dir/build.make CMakeFiles/cpu8080.dir/src/Intel8080.cpp.o
+.PHONY : src/Intel8080.cpp.o
 
-src/Cpu.i: src/Cpu.cpp.i
+src/Intel8080.i: src/Intel8080.cpp.i
 
-.PHONY : src/Cpu.i
+.PHONY : src/Intel8080.i
 
 # target to preprocess a source file
-src/Cpu.cpp.i:
-	$(MAKE) -f CMakeFiles/cpu8080.dir/build.make CMakeFiles/cpu8080.dir/src/Cpu.cpp.i
-.PHONY : src/Cpu.cpp.i
+src/Intel8080.cpp.i:
+	$(MAKE) -f CMakeFiles/cpu8080.dir/build.make CMakeFiles/cpu8080.dir/src/Intel8080.cpp.i
+.PHONY : src/Intel8080.cpp.i
 
-src/Cpu.s: src/Cpu.cpp.s
+src/Intel8080.s: src/Intel8080.cpp.s
 
-.PHONY : src/Cpu.s
+.PHONY : src/Intel8080.s
 
 # target to generate assembly for a file
-src/Cpu.cpp.s:
-	$(MAKE) -f CMakeFiles/cpu8080.dir/build.make CMakeFiles/cpu8080.dir/src/Cpu.cpp.s
-.PHONY : src/Cpu.cpp.s
+src/Intel8080.cpp.s:
+	$(MAKE) -f CMakeFiles/cpu8080.dir/build.make CMakeFiles/cpu8080.dir/src/Intel8080.cpp.s
+.PHONY : src/Intel8080.cpp.s
 
 src/main.o: src/main.cpp.o
 
@@ -186,9 +186,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... cpu8080"
-	@echo "... src/Cpu.o"
-	@echo "... src/Cpu.i"
-	@echo "... src/Cpu.s"
+	@echo "... src/Intel8080.o"
+	@echo "... src/Intel8080.i"
+	@echo "... src/Intel8080.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"

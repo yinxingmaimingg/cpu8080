@@ -81,40 +81,40 @@ CMakeFiles/cpu8080.dir/src/main.cpp.o.provides: CMakeFiles/cpu8080.dir/src/main.
 CMakeFiles/cpu8080.dir/src/main.cpp.o.provides.build: CMakeFiles/cpu8080.dir/src/main.cpp.o
 
 
-CMakeFiles/cpu8080.dir/src/Cpu.cpp.o: CMakeFiles/cpu8080.dir/flags.make
-CMakeFiles/cpu8080.dir/src/Cpu.cpp.o: ../src/Cpu.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/else/Documents/cpu8080/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/cpu8080.dir/src/Cpu.cpp.o"
-	/usr/lib/ccache/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/cpu8080.dir/src/Cpu.cpp.o -c /home/else/Documents/cpu8080/src/Cpu.cpp
+CMakeFiles/cpu8080.dir/src/Intel8080.cpp.o: CMakeFiles/cpu8080.dir/flags.make
+CMakeFiles/cpu8080.dir/src/Intel8080.cpp.o: ../src/Intel8080.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/else/Documents/cpu8080/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/cpu8080.dir/src/Intel8080.cpp.o"
+	/usr/lib/ccache/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/cpu8080.dir/src/Intel8080.cpp.o -c /home/else/Documents/cpu8080/src/Intel8080.cpp
 
-CMakeFiles/cpu8080.dir/src/Cpu.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/cpu8080.dir/src/Cpu.cpp.i"
-	/usr/lib/ccache/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/else/Documents/cpu8080/src/Cpu.cpp > CMakeFiles/cpu8080.dir/src/Cpu.cpp.i
+CMakeFiles/cpu8080.dir/src/Intel8080.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/cpu8080.dir/src/Intel8080.cpp.i"
+	/usr/lib/ccache/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/else/Documents/cpu8080/src/Intel8080.cpp > CMakeFiles/cpu8080.dir/src/Intel8080.cpp.i
 
-CMakeFiles/cpu8080.dir/src/Cpu.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/cpu8080.dir/src/Cpu.cpp.s"
-	/usr/lib/ccache/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/else/Documents/cpu8080/src/Cpu.cpp -o CMakeFiles/cpu8080.dir/src/Cpu.cpp.s
+CMakeFiles/cpu8080.dir/src/Intel8080.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/cpu8080.dir/src/Intel8080.cpp.s"
+	/usr/lib/ccache/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/else/Documents/cpu8080/src/Intel8080.cpp -o CMakeFiles/cpu8080.dir/src/Intel8080.cpp.s
 
-CMakeFiles/cpu8080.dir/src/Cpu.cpp.o.requires:
+CMakeFiles/cpu8080.dir/src/Intel8080.cpp.o.requires:
 
-.PHONY : CMakeFiles/cpu8080.dir/src/Cpu.cpp.o.requires
+.PHONY : CMakeFiles/cpu8080.dir/src/Intel8080.cpp.o.requires
 
-CMakeFiles/cpu8080.dir/src/Cpu.cpp.o.provides: CMakeFiles/cpu8080.dir/src/Cpu.cpp.o.requires
-	$(MAKE) -f CMakeFiles/cpu8080.dir/build.make CMakeFiles/cpu8080.dir/src/Cpu.cpp.o.provides.build
-.PHONY : CMakeFiles/cpu8080.dir/src/Cpu.cpp.o.provides
+CMakeFiles/cpu8080.dir/src/Intel8080.cpp.o.provides: CMakeFiles/cpu8080.dir/src/Intel8080.cpp.o.requires
+	$(MAKE) -f CMakeFiles/cpu8080.dir/build.make CMakeFiles/cpu8080.dir/src/Intel8080.cpp.o.provides.build
+.PHONY : CMakeFiles/cpu8080.dir/src/Intel8080.cpp.o.provides
 
-CMakeFiles/cpu8080.dir/src/Cpu.cpp.o.provides.build: CMakeFiles/cpu8080.dir/src/Cpu.cpp.o
+CMakeFiles/cpu8080.dir/src/Intel8080.cpp.o.provides.build: CMakeFiles/cpu8080.dir/src/Intel8080.cpp.o
 
 
 # Object files for target cpu8080
 cpu8080_OBJECTS = \
 "CMakeFiles/cpu8080.dir/src/main.cpp.o" \
-"CMakeFiles/cpu8080.dir/src/Cpu.cpp.o"
+"CMakeFiles/cpu8080.dir/src/Intel8080.cpp.o"
 
 # External object files for target cpu8080
 cpu8080_EXTERNAL_OBJECTS =
 
 cpu8080: CMakeFiles/cpu8080.dir/src/main.cpp.o
-cpu8080: CMakeFiles/cpu8080.dir/src/Cpu.cpp.o
+cpu8080: CMakeFiles/cpu8080.dir/src/Intel8080.cpp.o
 cpu8080: CMakeFiles/cpu8080.dir/build.make
 cpu8080: CMakeFiles/cpu8080.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/else/Documents/cpu8080/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable cpu8080"
@@ -126,7 +126,7 @@ CMakeFiles/cpu8080.dir/build: cpu8080
 .PHONY : CMakeFiles/cpu8080.dir/build
 
 CMakeFiles/cpu8080.dir/requires: CMakeFiles/cpu8080.dir/src/main.cpp.o.requires
-CMakeFiles/cpu8080.dir/requires: CMakeFiles/cpu8080.dir/src/Cpu.cpp.o.requires
+CMakeFiles/cpu8080.dir/requires: CMakeFiles/cpu8080.dir/src/Intel8080.cpp.o.requires
 
 .PHONY : CMakeFiles/cpu8080.dir/requires
 
