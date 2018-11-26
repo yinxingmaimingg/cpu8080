@@ -979,3 +979,18 @@ int main (int argc, char**argv)
 	}
 	return 0;
 }
+
+
+void generateInterrupt(int intr_num) {    
+	if (state->int_enable) {
+		state->int_enable = 0; // ?????????????????????????????????????????????????????/
+	    //perform "PUSH PC"    			
+	    state->memory[state->sp-1] = (state->pc & 0xFF00) >> 8;
+		state->memory[state->sp-2] = (state->pc & 0xff);
+		state->sp = state->sp - 2;
+
+	    //Set the PC to the low memory vector.    
+	    //This is identical to an "RST interrupt_num" instruction.    
+	    state->pc = 8 * interrupt_num;    
+	}
+}    
