@@ -1,6 +1,6 @@
 #include "Intel8080.hpp"
 
-Intel8080::Intel8080()
+Intel8080::Intel8080(InvadersIO* device)
 		: a(0)
 		, b(0)
 		, c(0)
@@ -11,6 +11,7 @@ Intel8080::Intel8080()
 		, pc(0)
 		, int_enable(false)
 		, opcodeCounter(0)
+		, dev_io(device)
 {
 	memory = (uint8_t*)malloc(sizeof(uint8_t)*0x10000);  //16K
 	flags.z = false;
@@ -49,23 +50,25 @@ void Intel8080::getPixels(uint32_t *pixels) {
 			py = WIDTH - (pos / HEIGHT) - 1;
 			px = HEIGHT - px -1;
 			py = WIDTH - py -1;
+			if ((px*WIDTH+py)<0 || (px*WIDTH+py)>=(WIDTH*HEIGHT)) {
+				cout<<"ERROR: Pixels index out of range: px - "<<dec<<px<<", py - "<<py<<endl;
+			}
 			pixels[px*WIDTH + py] = p_value;
 		}
 	}
 }
 
-void Intel8080::generateInterrupt(int intr_num) {    
+void Intel8080::generateInterrupt(uint16_t inte_num) {
 	if (int_enable) {
-		int_enable = false; // ?????????????????????????????????????????????????????/
+		int_enable = false;
 	    pushW(pc);
-	    //Set the PC to the low memory vector.    
-	    //This is identical to an "RST interrupt_num" instruction.    
-	    pc = 8 * intr_num;    
+	    pc = inte_num;    
 	}
 }    
 
 void Intel8080::printStatus() {
-	cout<<"@"<<dec<<opcodeCounter<<endl<<hex<<"Reg: a: "<<(int)a<<"  b: "<<(int)b<<"  c: "<<(int)c<<"  d: "<<(int)d
+	cout<<"@"<<dec<<opcodeCounter<<endl;
+	cout<<hex<<"Reg: a: "<<(int)a<<"  b: "<<(int)b<<"  c: "<<(int)c<<"  d: "<<(int)d
 		<<"  e: "<<(int)e<<"  h: "<<(int)h<<"  l: "<<(int)l
 		<<"  sp: "<<(int)sp<<"  pc: "<<(int)pc<<endl
 		<<"Flags: z: "<<flags.z<<"  s: "<<flags.s<<"  p: "<<flags.p<<"  c: "<<flags.c<<"  ac: "<<flags.ac<<endl;
@@ -160,6 +163,9 @@ bool Intel8080::checkFlag() {
 		case 0x05: return flags.p;
 		case 0x06: return !flags.s;
 		case 0x07: return flags.s;
+		default:
+			cout<<"ERROR: Check flag opcode unknown"<<endl;
+			exit(1);
 	}
 }
 
@@ -169,15 +175,11 @@ void Intel8080::updateZSP(uint8_t result) {
 	flags.p = getParity((int)result, 8);
 }
 
-void Intel8080::updateZSPAc(uint8_t result) {
-	updateZSP(result);
-	// TODO: set flags.ac flag
-}
 
 // the input should be a 8 bits nubmer, using 16 bits here for checking carry
-void Intel8080::updateCZSPAc(uint16_t result) {
+void Intel8080::updateCZSP(uint16_t result) {
 	flags.c = (((result >> 8) & 0x0001)==0x0001);
-	updateZSPAc((uint8_t)(result & 0xFF));
+	updateZSP((uint8_t)(result & 0xFF));
 }
 
 uint16_t Intel8080::combInt8(uint8_t high_val, uint8_t low_val) {
@@ -228,14 +230,17 @@ uint16_t Intel8080::popW() {
 void Intel8080::arith(uint8_t val) {
 	uint8_t reg3 = ((*opcode) >> 3) & 0x07;
 	switch (reg3) {
-		case 0x00: opADI(val);
-		case 0x01: opACI(val);
-		case 0x02: opSUI(val);
-		case 0x03: opSBI(val);
-		case 0x04: opANI(val);
-		case 0x05: opXRI(val);
-		case 0x06: opORI(val);
-		case 0x07: opCPI(val);
+		case 0x00: opADI(val); break;
+		case 0x01: opACI(val); break;
+		case 0x02: opSUI(val); break;
+		case 0x03: opSBI(val); break;
+		case 0x04: opANI(val); break;
+		case 0x05: opXRI(val); break;
+		case 0x06: opORI(val); break;
+		case 0x07: opCPI(val); break;
+		default:
+			cout<<"ERROR: Arithmetic opcode unknown"<<endl;
+			exit(1);
 	}
 }
 
@@ -257,13 +262,46 @@ void Intel8080::opINR() {
 	uint8_t temp3 = ((*opcode) >> 3);
 	uint8_t *addr = getReg3(temp3);
 	*addr = (*addr) + 1;
-	updateZSPAc(*addr);
+	flags.ac = (((*addr) & 0x0F)==0x00);
+	updateZSP(*addr);
 }
 void Intel8080::opDCR() {
 	uint8_t temp3 = ((*opcode) >> 3);
 	uint8_t *addr = getReg3(temp3);
 	*addr = (*addr) - 1;
-	updateZSPAc(*addr);
+	flags.ac = (((*addr) & 0x0F)==0x0F);
+	updateZSP(*addr);
+}
+
+void Intel8080::opCMA() {
+	a = ~a;
+}
+
+void Intel8080::opDAA() {
+	uint8_t temp8;
+	if (flags.ac || ((a & 0x0F) > 0x09)) {
+		temp8 = (a & 0x0F) + 0x06;
+		flags.ac = ((temp8 & 0x10) == 0x10);
+		a = (a & 0xF0) + (temp8 & 0x0F);
+	} else {
+		flags.ac = false;
+	}
+
+	if (flags.ac) {
+		a += 0x01 << 4;
+	}
+	if (flags.c || ((a >> 4) > 0x09)) {
+		temp8 = (a >> 4) + 0x06;
+		flags.c = ((temp8 & 0x10) == 0x10);
+		a = (a & 0x0F) + (temp8 << 4);
+	} else {
+		flags.c = false;
+	}
+	updateZSP(a);
+}
+
+void Intel8080::opPCHL() {
+	pc = combInt8(h, l);
 }
 
 void Intel8080::opJMP() {
@@ -300,6 +338,16 @@ void Intel8080::opSTAX() {
 		temp16 = combInt8(d, e);
 	}
 	memory[temp16] = a;
+}
+
+void Intel8080::opLDAX() {
+	uint16_t temp16;
+	if (((*opcode) >> 4)==0x00) {
+		temp16 = combInt8(b, c);
+	} else {
+		temp16 = combInt8(d, e);
+	}
+	a = memory[temp16];
 }
 
 void Intel8080::opPUSH() {
@@ -402,6 +450,21 @@ void Intel8080::opXCHG() {
 	l = temp_ex;
 }
 
+void Intel8080::opXTHL() {
+	uint8_t temp8;
+	temp8 = memory[sp];
+	memory[sp] = l;
+	l = temp8;
+	temp8 = memory[sp+1];
+	memory[sp+1] = h;
+	h = temp8;
+}
+
+void Intel8080::opSPHL() {
+	memory[sp] = l;
+	memory[sp+1] = h;
+}
+
 void Intel8080::opSTA() {
 	memory[combInt8(opcode[2], opcode[1])] = a;
 	pc += 2;
@@ -409,6 +472,20 @@ void Intel8080::opSTA() {
 
 void Intel8080::opLDA() {
 	a = memory[combInt8(opcode[2], opcode[1])];
+	pc += 2;
+}
+
+void Intel8080::opSHLD() {
+	uint16_t temp16 = combInt8(opcode[2], opcode[1]);
+	memory[temp16] = l;
+	memory[temp16+1] = h;
+	pc += 2;
+}
+
+void Intel8080::opLHLD() {
+	uint16_t temp16 = combInt8(opcode[2], opcode[1]);
+	l = memory[temp16];
+	h = memory[temp16+1];
 	pc += 2;
 }
 
@@ -435,7 +512,8 @@ void Intel8080::opMVI() {
 void Intel8080::opADI(uint8_t val) {
 	uint16_t temp16 = a;
 	temp16 += val;
-	updateCZSPAc(temp16);
+	updateCZSP(temp16);
+	flags.ac = (temp16 ^ val ^ a) & 0x10;
 	a = (uint8_t)(temp16 & 0xFF);
 }
 
@@ -445,14 +523,16 @@ void Intel8080::opACI(uint8_t val) {
 	if (flags.c) {
 		temp16 ++;
 	}
-	updateCZSPAc(temp16);
+	updateCZSP(temp16);
+	flags.ac = (temp16 ^ val ^ a) & 0x10;
 	a = (uint8_t)(temp16 & 0xFF);
 }
 
 void Intel8080::opSUI(uint8_t val) {	
 	uint16_t temp16 = ((~val + 1) & 0xFF); // 2's complement
 	temp16 += a;
-	updateCZSPAc(temp16);
+	updateCZSP(temp16);
+	flags.ac = ~ (temp16 ^ val ^ a) & 0x10;
 	flags.c = !flags.c;
 	a = (uint8_t)(temp16 & 0xFF);
 }
@@ -466,7 +546,8 @@ void Intel8080::opSBI(uint8_t val) {
 	}
 	temp16 = ((~temp8 + 1) & 0xFF); // 2's complement
 	temp16 += a;
-	updateCZSPAc(temp16);
+	updateCZSP(temp16);
+	flags.ac = ~ (temp16 ^ val ^ a) & 0x10;
 	flags.c = !flags.c;
 	a = (uint8_t)(temp16 & 0xFF);
 
@@ -497,6 +578,14 @@ void Intel8080::opCPI(uint8_t val) {
 	a = temp8;
 }
 
+void Intel8080::opCMC() {
+	flags.c = ~flags.c;
+}
+
+void Intel8080::opSTC() {
+	flags.c = true;
+}
+
 void Intel8080::opREMEARITH() {
 	uint8_t reg3;
 	uint8_t* addr;
@@ -510,6 +599,11 @@ void Intel8080::opIMMEARITH() {
 	pc ++;
 }
 
+void Intel8080::opRST() {
+	pushW(pc);
+	pc = (*opcode) & 0x38;
+}
+
 void Intel8080::opEI() {
 	int_enable = true;
 }
@@ -518,50 +612,67 @@ void Intel8080::opDI() {
 	int_enable = false;
 }
 
+void Intel8080::opIN() {
+	a = dev_io->machineIn(opcode[1]);
+	pc ++;
+}
+
+void Intel8080::opOUT() {
+	dev_io->machineOut(opcode[1], a);
+	pc ++;
+}
+
 
 
 void Intel8080::opROT() {
 	uint8_t reg2 = (*opcode) >> 3;
 	bool tempb;
 	switch (reg2) {
-		case 0x00:
+		case 0x00:	// RLC
 			flags.c = ((a>>7)==0x01);
 			a = a << 1;
 			if (flags.c) {
 				a = a | 0x01;
 			}
-		case 0x01:
+			break;
+		case 0x01:	// RRC
 			flags.c = ((a&0x01)==0x01);			
 			a = a >> 1;
 			if (flags.c) {
 				a = a | 0x80;
 			}
-		case 0x02:
+			break;
+		case 0x02:	// RAL
 			tempb = ((a>>7)==0x01);
 			a = a << 1;
 			if (flags.c) {
 				a = a | 0x01;
 			}
 			flags.c = tempb;
-		case 0x03:			
+			break;
+		case 0x03:	// RAR	
 			tempb = ((a&0x01)==0x01);			
 			a = a >> 1;
 			if (flags.c) {
 				a = a | 0x80;
 			}
 			flags.c = tempb;
+			break;
+		default:
+			cout<<"ERROR: Rotate opcode unknown"<<endl;
+			exit(1);
 	}
 }
 
 // ---------------------------------------------------------
 void Intel8080::mainLoop() {
 	uint16_t temp16;
-
 	opcode = &memory[pc];
 	opcodeCounter ++;
-	Disassemble8080Op();
+	if (debug_enable) {
+		disassemble();
+	}
 	pc ++;	
-
 
 	if (((*opcode) & maskINR) == checkINR) {
 		opINR();
@@ -595,54 +706,53 @@ void Intel8080::mainLoop() {
 		opREMEARITH ();
 	} else if (((*opcode) & maskIMMEARITH) == checkIMMEARITH)  {
 		opIMMEARITH();
-
-
+	} else if (((*opcode) & maskRST) == checkRST)  {
+		opRST();
 	} else {
 		switch (*opcode)
 		{
-			// NOP
-			case 0x00:
-				break;
-
-
-			// LDAX B
-			case 0x0A:
-				temp16 = b<<8;
-				temp16 += c;
-				a = memory[temp16];
-				break;
-
-			// LDAX D
-			case 0x1A:
-				temp16 = d<<8;
-				temp16 += e;
-				a = memory[temp16];
-				break;
+			case 0x00: break; // NOP
 
 			case 0x02: opSTAX(); break;
 			case 0x12: opSTAX(); break;
+			case 0x0A: opLDAX(); break;
+			case 0x1A: opLDAX(); break;
+
+			case 0x2F: opCMA(); break;
+			case 0x27: opDAA(); break;
 
 			case 0xCD: opCALL(); break;
+			case 0xE9: opPCHL(); break;
 			case 0xC3: opJMP(); break;
 			case 0xC9: opRET(); break;
 
 			case 0xEB: opXCHG(); break;
+			case 0xE3: opXTHL(); break;
+			case 0xF9: opSPHL(); break;
+
 			case 0x32: opSTA();  break;
 			case 0x3A: opLDA(); break;
+			case 0x22: opSHLD(); break;
+			case 0x2A: opLHLD(); break;
+
+			case 0x3F: opCMC(); break;
+			case 0x37: opSTC(); break;
 
 			case 0xFB: opEI(); break;
 			case 0xF3: opDI(); break;
 
-			case 0xDB: cout<<"***TODO: IN  "<<hex<<(int)(opcode[1])<<endl; pc++; break;
-			case 0xD3: cout<<"***TODO: OUT "<<hex<<(int)(opcode[1])<<endl; pc++; break;
+			case 0xDB: opIN(); break;
+			case 0xD3: opOUT(); break;
 
 			default: unimplementedInstruction(); break;
 		}
 	}
-	// printStatus();
+	if (debug_enable) {
+		printStatus();
+	}
 }
 
-void Intel8080::Disassemble8080Op()
+void Intel8080::disassemble()
 {
 	uint8_t* code = opcode;
 	int opbytes;
@@ -923,25 +1033,3 @@ void Intel8080::Disassemble8080Op()
 	} 
 	printf("\n");
 }
-
-/*
-
-
-void LogicFlagsA(State8080 *state)
-{
-	state->cc.cy = state->cc.ac = 0;
-	state->cc.z = (state->a == 0);
-	state->cc.s = (0x80 == (state->a & 0x80));
-	state->cc.p = parity(state->a, 8);
-}
-
-void ArithFlagsA(State8080 *state, uint16_t res)
-{
-	state->cc.cy = (res > 0xff);
-	state->cc.z = ((res&0xff) == 0);
-	state->cc.s = (0x80 == (res & 0x80));
-	state->cc.p = parity(res&0xff, 8);
-}
-
-
-*/

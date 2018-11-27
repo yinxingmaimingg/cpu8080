@@ -4,6 +4,12 @@
 CMakeFiles/cpu8080.dir/src/Intel8080.cpp.o
  /home/else/Documents/cpu8080/src/Intel8080.cpp
  /home/else/Documents/cpu8080/src/Intel8080.hpp
+ /home/else/Documents/cpu8080/src/InvadersIO.hpp
+CMakeFiles/cpu8080.dir/src/InvadersIO.cpp.o
+ /home/else/Documents/cpu8080/src/Intel8080.hpp
+ /home/else/Documents/cpu8080/src/InvadersIO.cpp
+ /home/else/Documents/cpu8080/src/InvadersIO.hpp
 CMakeFiles/cpu8080.dir/src/main.cpp.o
  /home/else/Documents/cpu8080/src/Intel8080.hpp
+ /home/else/Documents/cpu8080/src/InvadersIO.hpp
  /home/else/Documents/cpu8080/src/main.cpp

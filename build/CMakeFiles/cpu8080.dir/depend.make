@@ -3,7 +3,13 @@
 
 CMakeFiles/cpu8080.dir/src/Intel8080.cpp.o: ../src/Intel8080.cpp
 CMakeFiles/cpu8080.dir/src/Intel8080.cpp.o: ../src/Intel8080.hpp
+CMakeFiles/cpu8080.dir/src/Intel8080.cpp.o: ../src/InvadersIO.hpp
+
+CMakeFiles/cpu8080.dir/src/InvadersIO.cpp.o: ../src/Intel8080.hpp
+CMakeFiles/cpu8080.dir/src/InvadersIO.cpp.o: ../src/InvadersIO.cpp
+CMakeFiles/cpu8080.dir/src/InvadersIO.cpp.o: ../src/InvadersIO.hpp
 
 CMakeFiles/cpu8080.dir/src/main.cpp.o: ../src/Intel8080.hpp
+CMakeFiles/cpu8080.dir/src/main.cpp.o: ../src/InvadersIO.hpp
 CMakeFiles/cpu8080.dir/src/main.cpp.o: ../src/main.cpp
 

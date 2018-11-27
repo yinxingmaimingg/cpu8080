@@ -150,6 +150,33 @@ src/Intel8080.cpp.s:
 	$(MAKE) -f CMakeFiles/cpu8080.dir/build.make CMakeFiles/cpu8080.dir/src/Intel8080.cpp.s
 .PHONY : src/Intel8080.cpp.s
 
+src/InvadersIO.o: src/InvadersIO.cpp.o
+
+.PHONY : src/InvadersIO.o
+
+# target to build an object file
+src/InvadersIO.cpp.o:
+	$(MAKE) -f CMakeFiles/cpu8080.dir/build.make CMakeFiles/cpu8080.dir/src/InvadersIO.cpp.o
+.PHONY : src/InvadersIO.cpp.o
+
+src/InvadersIO.i: src/InvadersIO.cpp.i
+
+.PHONY : src/InvadersIO.i
+
+# target to preprocess a source file
+src/InvadersIO.cpp.i:
+	$(MAKE) -f CMakeFiles/cpu8080.dir/build.make CMakeFiles/cpu8080.dir/src/InvadersIO.cpp.i
+.PHONY : src/InvadersIO.cpp.i
+
+src/InvadersIO.s: src/InvadersIO.cpp.s
+
+.PHONY : src/InvadersIO.s
+
+# target to generate assembly for a file
+src/InvadersIO.cpp.s:
+	$(MAKE) -f CMakeFiles/cpu8080.dir/build.make CMakeFiles/cpu8080.dir/src/InvadersIO.cpp.s
+.PHONY : src/InvadersIO.cpp.s
+
 src/main.o: src/main.cpp.o
 
 .PHONY : src/main.o
@@ -189,6 +216,9 @@ help:
 	@echo "... src/Intel8080.o"
 	@echo "... src/Intel8080.i"
 	@echo "... src/Intel8080.s"
+	@echo "... src/InvadersIO.o"
+	@echo "... src/InvadersIO.i"
+	@echo "... src/InvadersIO.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"

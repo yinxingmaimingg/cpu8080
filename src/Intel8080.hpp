@@ -1,5 +1,5 @@
-#ifndef CPU8080
-#define CPU8080
+#ifndef INTEL8080
+#define INTEL8080
 
 #include <string>
 #include <chrono>
@@ -7,11 +7,10 @@
 #include <iomanip>
 #include <vector>
 
-#include "SDL2/SDL.h"
+#include "InvadersIO.hpp"
 
 using namespace std;
 
-const int DELAY_MICROSECONDS = 1200;
 const int WIDTH = 224;
 const int HEIGHT = 256;
 
@@ -22,24 +21,32 @@ typedef struct ConditionCodes {
 
 class Intel8080 {
 public:
-	Intel8080();
+	Intel8080(InvadersIO* device);
 	~Intel8080();
 	void loadFile(string filename);
 	void getPixels(uint32_t *pixels);
 	void mainLoop();
-	void generateInterrupt(int intr_num);
+	void generateInterrupt(uint16_t inte_num);
 	void printStatus();
 
+	static uint16_t combInt8(uint8_t high_val, uint8_t low_val);
+	uint16_t pc;		// program counter
+
+	int debug_enable = false;
+
 private:
+	// hardware
 	uint8_t	a, b, c, d, e, h, l;	// main registers 
-	uint16_t sp;	// stack pointer
-	uint16_t pc;	// program counter
+	uint16_t sp;		// stack pointer
 	uint8_t *memory;
 	Flags flags;
-	bool int_enable; // whether interrupt is enabled
-	uint8_t *opcode; // current opcde location
+	bool int_enable; 	// whether interrupt is enabled
+	uint8_t *opcode; 	// current opcde location
 
-	int opcodeCounter;
+	int opcodeCounter; 	// for debug
+
+	// input & output device
+	InvadersIO * dev_io;
 	
 	void unimplementedInstruction();
 	bool getParity(int x, int size);
@@ -48,9 +55,7 @@ private:
 	uint8_t* getReg2Addr2(uint8_t reg2);
 	bool checkFlag();
 	void updateZSP(uint8_t result);
-	void updateZSPAc(uint8_t result);
-	void updateCZSPAc(uint16_t result);
-	uint16_t combInt8(uint8_t high_val, uint8_t low_val);
+	void updateCZSP(uint16_t result);
 	uint8_t splitInt16High(uint16_t val);
 	uint8_t splitInt16Low(uint16_t val);
 
@@ -77,29 +82,51 @@ private:
 
 	void opINR();
 	void opDCR();
+	void opCMA();
+	void opDAA();
+
+	void opPCHL();
 	void opJMP();
 	void opCALL();
 	void opRET();
 	void opMOV();
+
 	void opSTAX();
 	void opLDAX();
+
 	void opPUSH();
 	void opPOP();
 	void opDAD();
 	void opINX();
 	void opDCX();
+
 	void opXCHG();
+	void opXTHL();
+	void opSPHL();
+
 	void opSTA();
 	void opLDA();
+	void opSHLD();
+	void opLHLD();
+
 	void opLXI();
 	void opMVI();
 	void opROT();
+
+	void opCMC();
+	void opSTC();
+
 	void opREMEARITH();
 	void opIMMEARITH();
+
+	void opRST();
 	void opEI();
 	void opDI();
 
-	void Disassemble8080Op();
+	void opIN();
+	void opOUT();
+
+	void disassemble();
 
 	const uint8_t maskINR   = 0xC7;
 	const uint8_t checkINR  = 0x04;
@@ -149,6 +176,8 @@ private:
 	const uint8_t maskIMMEARITH   = 0xC7;
 	const uint8_t checkIMMEARITH  = 0xC6;
 
+	const uint8_t maskRST 	= 0xC7;
+	const uint8_t checkRST 	= 0xC7;
 };
 
 #endif

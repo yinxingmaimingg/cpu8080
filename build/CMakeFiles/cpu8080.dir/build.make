@@ -57,28 +57,28 @@ include CMakeFiles/cpu8080.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/cpu8080.dir/flags.make
 
-CMakeFiles/cpu8080.dir/src/main.cpp.o: CMakeFiles/cpu8080.dir/flags.make
-CMakeFiles/cpu8080.dir/src/main.cpp.o: ../src/main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/else/Documents/cpu8080/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/cpu8080.dir/src/main.cpp.o"
-	/usr/lib/ccache/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/cpu8080.dir/src/main.cpp.o -c /home/else/Documents/cpu8080/src/main.cpp
+CMakeFiles/cpu8080.dir/src/InvadersIO.cpp.o: CMakeFiles/cpu8080.dir/flags.make
+CMakeFiles/cpu8080.dir/src/InvadersIO.cpp.o: ../src/InvadersIO.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/else/Documents/cpu8080/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/cpu8080.dir/src/InvadersIO.cpp.o"
+	/usr/lib/ccache/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/cpu8080.dir/src/InvadersIO.cpp.o -c /home/else/Documents/cpu8080/src/InvadersIO.cpp
 
-CMakeFiles/cpu8080.dir/src/main.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/cpu8080.dir/src/main.cpp.i"
-	/usr/lib/ccache/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/else/Documents/cpu8080/src/main.cpp > CMakeFiles/cpu8080.dir/src/main.cpp.i
+CMakeFiles/cpu8080.dir/src/InvadersIO.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/cpu8080.dir/src/InvadersIO.cpp.i"
+	/usr/lib/ccache/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/else/Documents/cpu8080/src/InvadersIO.cpp > CMakeFiles/cpu8080.dir/src/InvadersIO.cpp.i
 
-CMakeFiles/cpu8080.dir/src/main.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/cpu8080.dir/src/main.cpp.s"
-	/usr/lib/ccache/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/else/Documents/cpu8080/src/main.cpp -o CMakeFiles/cpu8080.dir/src/main.cpp.s
+CMakeFiles/cpu8080.dir/src/InvadersIO.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/cpu8080.dir/src/InvadersIO.cpp.s"
+	/usr/lib/ccache/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/else/Documents/cpu8080/src/InvadersIO.cpp -o CMakeFiles/cpu8080.dir/src/InvadersIO.cpp.s
 
-CMakeFiles/cpu8080.dir/src/main.cpp.o.requires:
+CMakeFiles/cpu8080.dir/src/InvadersIO.cpp.o.requires:
 
-.PHONY : CMakeFiles/cpu8080.dir/src/main.cpp.o.requires
+.PHONY : CMakeFiles/cpu8080.dir/src/InvadersIO.cpp.o.requires
 
-CMakeFiles/cpu8080.dir/src/main.cpp.o.provides: CMakeFiles/cpu8080.dir/src/main.cpp.o.requires
-	$(MAKE) -f CMakeFiles/cpu8080.dir/build.make CMakeFiles/cpu8080.dir/src/main.cpp.o.provides.build
-.PHONY : CMakeFiles/cpu8080.dir/src/main.cpp.o.provides
+CMakeFiles/cpu8080.dir/src/InvadersIO.cpp.o.provides: CMakeFiles/cpu8080.dir/src/InvadersIO.cpp.o.requires
+	$(MAKE) -f CMakeFiles/cpu8080.dir/build.make CMakeFiles/cpu8080.dir/src/InvadersIO.cpp.o.provides.build
+.PHONY : CMakeFiles/cpu8080.dir/src/InvadersIO.cpp.o.provides
 
-CMakeFiles/cpu8080.dir/src/main.cpp.o.provides.build: CMakeFiles/cpu8080.dir/src/main.cpp.o
+CMakeFiles/cpu8080.dir/src/InvadersIO.cpp.o.provides.build: CMakeFiles/cpu8080.dir/src/InvadersIO.cpp.o
 
 
 CMakeFiles/cpu8080.dir/src/Intel8080.cpp.o: CMakeFiles/cpu8080.dir/flags.make
@@ -105,19 +105,45 @@ CMakeFiles/cpu8080.dir/src/Intel8080.cpp.o.provides: CMakeFiles/cpu8080.dir/src/
 CMakeFiles/cpu8080.dir/src/Intel8080.cpp.o.provides.build: CMakeFiles/cpu8080.dir/src/Intel8080.cpp.o
 
 
+CMakeFiles/cpu8080.dir/src/main.cpp.o: CMakeFiles/cpu8080.dir/flags.make
+CMakeFiles/cpu8080.dir/src/main.cpp.o: ../src/main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/else/Documents/cpu8080/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/cpu8080.dir/src/main.cpp.o"
+	/usr/lib/ccache/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/cpu8080.dir/src/main.cpp.o -c /home/else/Documents/cpu8080/src/main.cpp
+
+CMakeFiles/cpu8080.dir/src/main.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/cpu8080.dir/src/main.cpp.i"
+	/usr/lib/ccache/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/else/Documents/cpu8080/src/main.cpp > CMakeFiles/cpu8080.dir/src/main.cpp.i
+
+CMakeFiles/cpu8080.dir/src/main.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/cpu8080.dir/src/main.cpp.s"
+	/usr/lib/ccache/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/else/Documents/cpu8080/src/main.cpp -o CMakeFiles/cpu8080.dir/src/main.cpp.s
+
+CMakeFiles/cpu8080.dir/src/main.cpp.o.requires:
+
+.PHONY : CMakeFiles/cpu8080.dir/src/main.cpp.o.requires
+
+CMakeFiles/cpu8080.dir/src/main.cpp.o.provides: CMakeFiles/cpu8080.dir/src/main.cpp.o.requires
+	$(MAKE) -f CMakeFiles/cpu8080.dir/build.make CMakeFiles/cpu8080.dir/src/main.cpp.o.provides.build
+.PHONY : CMakeFiles/cpu8080.dir/src/main.cpp.o.provides
+
+CMakeFiles/cpu8080.dir/src/main.cpp.o.provides.build: CMakeFiles/cpu8080.dir/src/main.cpp.o
+
+
 # Object files for target cpu8080
 cpu8080_OBJECTS = \
-"CMakeFiles/cpu8080.dir/src/main.cpp.o" \
-"CMakeFiles/cpu8080.dir/src/Intel8080.cpp.o"
+"CMakeFiles/cpu8080.dir/src/InvadersIO.cpp.o" \
+"CMakeFiles/cpu8080.dir/src/Intel8080.cpp.o" \
+"CMakeFiles/cpu8080.dir/src/main.cpp.o"
 
 # External object files for target cpu8080
 cpu8080_EXTERNAL_OBJECTS =
 
-cpu8080: CMakeFiles/cpu8080.dir/src/main.cpp.o
+cpu8080: CMakeFiles/cpu8080.dir/src/InvadersIO.cpp.o
 cpu8080: CMakeFiles/cpu8080.dir/src/Intel8080.cpp.o
+cpu8080: CMakeFiles/cpu8080.dir/src/main.cpp.o
 cpu8080: CMakeFiles/cpu8080.dir/build.make
 cpu8080: CMakeFiles/cpu8080.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/else/Documents/cpu8080/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable cpu8080"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/else/Documents/cpu8080/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable cpu8080"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/cpu8080.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -125,8 +151,9 @@ CMakeFiles/cpu8080.dir/build: cpu8080
 
 .PHONY : CMakeFiles/cpu8080.dir/build
 
-CMakeFiles/cpu8080.dir/requires: CMakeFiles/cpu8080.dir/src/main.cpp.o.requires
+CMakeFiles/cpu8080.dir/requires: CMakeFiles/cpu8080.dir/src/InvadersIO.cpp.o.requires
 CMakeFiles/cpu8080.dir/requires: CMakeFiles/cpu8080.dir/src/Intel8080.cpp.o.requires
+CMakeFiles/cpu8080.dir/requires: CMakeFiles/cpu8080.dir/src/main.cpp.o.requires
 
 .PHONY : CMakeFiles/cpu8080.dir/requires
 
