@@ -1,3 +1,0 @@
-/home/else/Documents/cpu8080/build/CMakeFiles/edit_cache.dir
-/home/else/Documents/cpu8080/build/CMakeFiles/rebuild_cache.dir
-/home/else/Documents/cpu8080/build/CMakeFiles/cpu8080.dir

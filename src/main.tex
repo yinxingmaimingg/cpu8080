@@ -1,0 +1,129 @@
+\documentclass[a4paper,11pt]{article}
+\setlength{\textwidth}{15.93cm} \setlength{\textheight}{24.61cm}
+\oddsidemargin=-0.0cm \topmargin=-1.33cm
+\usepackage{charter,eulervm}
+\renewcommand{\baselinestretch}{1.5}
+\usepackage{amsthm,amsmath,amssymb,upgreek,marvosym}
+\usepackage{array}
+\usepackage{makeidx}  % allows for indexgeneration
+\usepackage{paralist}
+\usepackage{subfig}
+\usepackage{tabularx}
+\usepackage{tabu} 
+\usepackage[nottoc]{tocbibind}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage[pdftex,breaklinks,colorlinks,
+    citecolor={blue}, linkcolor={blue},urlcolor=Maroon]{hyperref}
+\usepackage{tkz-graph}
+\usetikzlibrary{arrows,shapes,decorations.pathmorphing}
+\graphicspath{{./images/}}%helpful if your graphic files are in another directory
+%
+\theoremstyle{plain} %remark,  plain
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{definition}{Definition}
+\def\boxit#1{\vbox{\hrule\hbox{\vrule\kern4pt
+  \vbox{\kern1pt#1\kern1pt}
+\kern2pt\vrule}\hrule}}
+
+\newcommand{\keywords}[1]{\bigskip \par\noindent
+{\small{\em Keywords\/}: #1}}
+\newcommand{\opt}[2]{\ensuremath{{\mathtt{#1}(#2)}}}
+\newcommand{\comment}[1]{\`$\setminus\!\!\setminus${\em #1}}
+
+\title{\vspace{6cm}\textbf{Intel 8080 Emulator} \\ CS 850 Advanced Topics in Computer Architecture and Operating Systems Project\\}
+
+\author{Student Name: Jinshan Gu\\ Student ID: 20765077 \\}
+\date{}
+
+\begin{document}
+\maketitle 
+\newpage
+
+\section*{Abstract}
+
+This project implements an emulator of Intel 8080 and the arcade video game Space Invaders. The Intel 8080 CPU, memory and I/O of Space Invaders machine is implemented. The emulator can load the given Space Invaders program and execute it on PC. The SDL library is used to draw graphics.
+
+\newpage
+
+\tableofcontents
+\newpage
+
+
+\section{Introduction}
+
+\section{Background}
+The Intel 8080 was a 8-bit microprocessor developed by Intel in April 1974. It is used in many microcomputers, such as the MITS Altair 8800 Computer, and several early arcade video games. This project chooses to emulate the most popular arcade game among them - Space Invaders. It is expected that the Intel 8080 emulator can be used for any programs based on it. However, I have only tested it on Space Invaders, since specific I/O emulator need to be implemented for each program. 
+
+\section{Implementation}
+The project mainly implements three parts: Intel 8080 CPU emulator, I/O device emulator for Space Invaders and graphics. The Space Invaders code ($$invaders.rom$$) is downloaded from the Internet for test purpose. The emulator is written in C++, and the SDL library is used to draw graphics. The emulator reads $$invaders.rom$$ as the input, and execute the code as if it is run on an Intel 8080 CPU. Keyboard input is used to emulate the input of Space Invaders arcade machine.
+
+\subsection{Intel 8080 CPU emulator}
+This is the main part in this project. The part emulate the hardware and the instructions of Intel 8080 CPU, including main registers, status register, stack pointer and program counter. For simplicity purpose, a 16K memory is also emulated in this part. 
+
+\subsubsection{Registers}
+The Intel 8080 has seven 8-bit main registers (A, B, C, D, E, H, and L). It also has an 8-bit status register. Five bits in the status registers are called flag bits (Sign, Zero, Parity, Carry and Auxiliary carry), and can be set or reset depends on the results of arithmetic operations. In addition, an 16-bit stack pointer indicates the current stack location in the memory. An 16-bit program counter indicates the current instruction (opcode) location in the memory.
+
+\subsubsection{Memory}
+A 16k array of 8-bit numbers is allocated in the Intel 8080 emulator to emulate memory. In a real machine the CPU and the memory are separated hardware, but I include the memory in the CPU emulator for simplicity purpose. At the start of the program, the Space Invaders code ($$invaders.rom$$) is loaded into memory 0x0000 to 0x1FFF, which is the ROM partition (Note: In the original Space Invaders program, codes are separated into files: invaders.h, invaders.g, invaders.f and invaders.e. These four files are loaded into corresponding memory address. In my implementation I combine four programs into one. This makes no difference since they are loaded into consecutive memory address.)  The memory address from 0x2000 to 0x23FF is the work RAM, which can be used for stack. The memory address from 0x2400 to 0x3FFF is the video RAM. The output graphics of each pixel is store in this part, and will be read by the graphics emulator part to draw graphics. 
+
+\subsubsection{Others}
+There are some other miscellaneous variables used for different purpose. 
+
+A boolean variable $int\_enable$ indicates whether the interrupt is enabled or not. It can be set or reset by opcode $EI$ and $DI$. 
+
+A boolean variable $halt$ indicates whether the CPU is at the STOPPED state. At the STOPPED, the CPU will not execute any instruction until it receives an interrupt. The opcode $HLT$ will make the CPU enter the STOPPED state. However, this function is not tested since the Space Invaders program does not include a $HLT$ instruction. 
+
+A pointer variable $dev\_io$ points to the Space Invaders I/O device emulator. The input and output are passed through this variable.
+
+A integer variable $opcode\_counter$ counters the number of instruction executed. It is only used for debugging.
+
+\subsection{Space Invaders I/O device emulator}
+The input and output opcodes can read or write a 8-bit number from or to a specific port. How the machine responds to the user input and CPU output needs to be specified by the I/O device. The I/O emulator includes three input ports (Port 1, 2, 3) and five output ports (Port 2, 3, 4, 5, 6). The input of the user is specified by the corresponding bits of input Port 1 and Port 2 (Table ???). For example, if the user press 1P shot button, the 4th bit of Port 1 will be set to 1. The CPU emulator can get this information by reading the data of Port 1.
+
+The input Port 1, output Port 2 and Port 4 are used as hardware shift registers. Since the Intel 8080 instruction set does not include any opcode for shifting, the Space Invaders I/O device provide shift registers, which simplify shifting operation by calling input and output instruction to I/O device.
+
+Output Port 3 and Port 5 are used for playing sounds, which are not implemented in my project. Output Port 6 is neither implemented since it is only used for debugging purpose.
+
+\subsection{Main function}
+A C++ program will start at the $main$ function. My $main$ function including the following function:
+
+Initialize CPU emulator, I/O emulator and SDL graphics library. 
+
+Call CPU emulator to execute the program.
+
+Detect keyboard input and call I/O emulator to set the corresponding input bits.
+
+Generate interrupt at a 60 Hz frequency.
+
+Read the graphics data from memory, and draw graphics using SDL library at a 60 Hz frequency.
+
+
+\section{Result}
+The emulator can load the Space Invaders program and execute it, as if using the Space Invaders arcade video game machine. A player can using the keyboard button "C" to emulate putting coins into the arcade game machine, and using "W", "A", "D" to control the space ship (Figure ???). A player can choose either 1 player mode or two player mode.
+
+
+
+\section{Discussion}
+The project leaves two part unimplemented: sounds and graphics with color. These two parts can make the game more fancy, but the game can still run smoothly without them. Implementing them is only related to calling C++ library, but has almost nothing to do with the main part of the emulator. Thus they will not affect the completeness of this project.
+
+Other programs based on Intel 8080 can be implemented base on my emulator for further extension. However, the device based I/O emulator and graphics need to be reimplemented.
+
+
+
+\section {Summary}
+This project implements an emulator for Intel 8080 CPU. It emulate the hardware using vairables, and it can decode all Intel 8080 opcodes and execute them. The I/O for Space Invaders machine is also emulated, so Space Invaders can be run to test the emulator. It is expected to run other Intel 8080 program, but I have not tested them since it requries device specified I/O emualtor and graphics.
+
+
+
+\section{Ackownledgement}
+At the initial stage I read Emulator 101 \ref???. It is a good tutorial for people with little experience in writing emulator. I also refer to Intel 8080 Assembly Language Programmaing Manual \ref???, which includes  the detail description of each opcode and usage examples. However, if you are going the implement a similar emulator, please note that both mateirals have errors. The Computer Archeology \ref??? includes detail documentation for the Space Invaders code and I/O device, which is helpful in debugging. The Space Invaders emulator written by superzazu \ref??? also helps me a lot. Its code is clear and easy to understand, although I cannot run it on my computer.
+
+
+
+\newpage
+\bibliographystyle{unsrt}
+\bibliography{main}
+\end{document}

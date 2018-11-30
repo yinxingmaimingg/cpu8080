@@ -32,7 +32,7 @@ public:
 	static uint16_t combInt8(uint8_t high_val, uint8_t low_val);
 	uint16_t pc;		// program counter
 
-	int debug_enable = false;
+	int debug_enable;
 
 private:
 	// hardware
@@ -41,9 +41,10 @@ private:
 	uint8_t *memory;
 	Flags flags;
 	bool int_enable; 	// whether interrupt is enabled
+	bool halt;			// for HLT
 	uint8_t *opcode; 	// current opcde location
 
-	int opcodeCounter; 	// for debug
+	int opcode_counter; 	// for debug
 
 	// input & output device
 	InvadersIO * dev_io;
@@ -125,6 +126,8 @@ private:
 
 	void opIN();
 	void opOUT();
+
+	void opHLT();
 
 	void disassemble();
 

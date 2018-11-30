@@ -10,7 +10,9 @@ Intel8080::Intel8080(InvadersIO* device)
 		, sp(0)
 		, pc(0)
 		, int_enable(false)
-		, opcodeCounter(0)
+		, debug_enable(false)
+		, halt(false)
+		, opcode_counter(0)
 		, dev_io(device)
 {
 	memory = (uint8_t*)malloc(sizeof(uint8_t)*0x10000);  //16K
@@ -62,12 +64,13 @@ void Intel8080::generateInterrupt(uint16_t inte_num) {
 	if (int_enable) {
 		int_enable = false;
 	    pushW(pc);
-	    pc = inte_num;    
+	    pc = inte_num;
+	    halt = false;
 	}
 }    
 
 void Intel8080::printStatus() {
-	cout<<"@"<<dec<<opcodeCounter<<endl;
+	cout<<"@"<<dec<<opcode_counter<<endl;
 	cout<<hex<<"Reg: a: "<<(int)a<<"  b: "<<(int)b<<"  c: "<<(int)c<<"  d: "<<(int)d
 		<<"  e: "<<(int)e<<"  h: "<<(int)h<<"  l: "<<(int)l
 		<<"  sp: "<<(int)sp<<"  pc: "<<(int)pc<<endl
@@ -664,11 +667,19 @@ void Intel8080::opROT() {
 	}
 }
 
+void Intel8080::opHLT() {	// not tested
+	halt = true;
+}
+
 // ---------------------------------------------------------
 void Intel8080::mainLoop() {
+	if (halt) {
+		return;
+	}
+
 	uint16_t temp16;
 	opcode = &memory[pc];
-	opcodeCounter ++;
+	opcode_counter ++;
 	if (debug_enable) {
 		disassemble();
 	}
@@ -743,6 +754,8 @@ void Intel8080::mainLoop() {
 
 			case 0xDB: opIN(); break;
 			case 0xD3: opOUT(); break;
+
+			case 0x76: opHLT(); break;
 
 			default: unimplementedInstruction(); break;
 		}
